@@ -88,6 +88,7 @@ O arquivo `app.py` serve como o ponto de entrada principal para uma aplicação 
 </tr></td>
 		</table>
 		</blockquote>
+</details open>
 
 ##  Getting Started
 
