@@ -1,13 +1,13 @@
 <p align="center">
-    <img src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/ec559a9f6bfd399b82bb44393651661b08aaf7ba/icons/folder-markdown-open.svg" align="center" width="30%">
+    <img src="./img/sucata_icon.ico" align="center" width="30%">
 </p>
-<p align="center"><h1 align="center">SUCATA</h1></p>
+<p align="center"><h1 align="center">Olá, eu sou o SUCATA</h1></p>
 <p align="center">
-	<em>Unlocking subtitles, one file at a time.</em>
+	<em>Um tradutor de legendas que usa modelos de Inteligência Artificias open-source.</em>
 </p>
 <p align="center">
 	<!-- local repository, no metadata badges. --></p>
-<p align="center">Built with the tools and technologies:</p>
+<p align="center">Desenvolvido em:</p>
 <p align="center">
 	<img src="https://img.shields.io/badge/Python-3776AB.svg?style=default&logo=Python&logoColor=white" alt="Python">
 </p>
@@ -18,7 +18,6 @@
 - [ Overview](#-overview)
 - [ Features](#-features)
 - [ Project Structure](#-project-structure)
-  - [ Project Index](#-project-index)
 - [ Getting Started](#-getting-started)
   - [ Prerequisites](#-prerequisites)
   - [ Installation](#-installation)
@@ -33,9 +32,9 @@
 
 ##  Overview
 
-Here is a 50-word summary of the Sucata project:
+Sucata é uma ferramenta de código aberto que extrai e traduz legendas de arquivos MKV, oferecendo uma interface amigável para seleção de arquivos e trilhas. Além de também traduzir legendas .srt, .ass e .ssa.
 
-"Sucata is an open-source tool that extracts subtitles from MKV files, providing a user-friendly interface for selecting files and tracks. Leveraging machine learning models, it enhances accuracy and efficiency, making it an essential solution for video content creators and enthusiasts alike."
+Utilizando um prompt extremamente refinado para que a legenda possa ter a melhor qualidade possível.
 
 ---
 
@@ -43,9 +42,9 @@ Here is a 50-word summary of the Sucata project:
 
 | **Scalability** |                  |
 | :---:           | :---          |
-| 📈 Scalability Fact 1: The microservices-based architecture enables horizontal scaling by distributing incoming requests across multiple instances of each service. |
-| 📈 Scalability Fact 2: Load balancing is distributed, optimizing resource utilization and ensuring efficient processing of incoming traffic. |
-| 📈 Scalability Fact 3: Data consistency is ensured through standardized APIs and message queues, minimizing the risk of data inconsistencies. |
+| 📈 Fato sobre Escalabilidade 1: A arquitetura baseada em microsserviços permite escalabilidade horizontal ao distribuir as requisições entre várias instâncias de cada serviço. |
+| 📈 📈 Fato sobre Escalabilidade 2: O balanceamento de carga é distribuído, otimizando a utilização de recursos e garantindo o processamento eficiente do tráfego recebido. |
+| 📈 Fato sobre Escalabilidade 3: A consistência dos dados é mantida por meio de APIs padronizadas e filas de mensagens, reduzindo o risco de inconsistências. |
 
 ---
 
@@ -69,114 +68,68 @@ Here is a 50-word summary of the Sucata project:
 <details open>
 	<summary><b><code>SUCATA/</code></b></summary>
 	<details> <!-- __root__ Submodule -->
-		<summary><b>__root__</b></summary>
+		<summary><b>Root</b></summary>
 		<blockquote>
 			<table>
 			<tr>
 				<td><b><a href='Desktop/sucata/app.py'>app.py</a></b></td>
-				<td>- **Summary:**
+				<td>- **Sumário:**
 
-The `app.py` file serves as the main entry point for an application that extracts subtitles from MKV files using the `pysubs2` library<br>- The code achieves this by utilizing a GUI built with Tkinter, allowing users to select an MKV file and specify a desired subtitle track<br>- Upon execution, the application uses a combination of command-line tools (e.g., `mkvextract`) and machine learning models (via PyTorch and Transformers) to extract the specified subtitle track from the selected MKV file.
+O arquivo `app.py` serve como o ponto de entrada principal para uma aplicação que extrai legendas de arquivos MKV utilizando a biblioteca `pysubs2`.<br>  
+- O código realiza essa tarefa por meio de uma interface gráfica (GUI) construída com Tkinter, permitindo que os usuários selecionem um arquivo MKV e especifiquem a faixa de legenda desejada.<br>  
+- Ao ser executado, a aplicação combina ferramentas de linha de comando (como o `mkvextract`) com modelos de aprendizado de máquina (via PyTorch e Transformers) para extrair a faixa de legenda especificada do arquivo MKV selecionado.  
 
 **Key Functionality:**
 
-* Provides a user-friendly interface for selecting an MKV file and specifying a desired subtitle track.
-* Utilizes `pysubs2` to extract the specified subtitle track from the selected MKV file.
-* Employs machine learning models (via PyTorch and Transformers) to enhance subtitle extraction accuracy.
+- Oferece uma interface amigável para selecionar um arquivo MKV e especificar a faixa de legenda desejada.
+- Utiliza o pysubs2 para extrair a faixa de legenda especificada do arquivo MKV selecionado.
+- Emprega modelos de aprendizado de máquina (via PyTorch e Transformers) para aumentar a precisão na extração de legendas.
 
-**Project Context:**
 
-This code is part of a larger project that aims to provide an efficient and user-friendly solution for extracting subtitles from various video formats<br>- The `app.py` file plays a crucial role in this endeavor, serving as the primary interface between the user and the subtitle extraction process.</td>
-			</tr>
-			<tr>
-				<td><b><a href='Desktop/sucata/requirements.txt'>requirements.txt</a></b></td>
-				<td>- The main purpose of the requirements.txt file is to define project dependencies and version constraints<br>- It specifies the required packages and their versions for the entire codebase architecture<br>- The file serves as a central hub for managing project dependencies, ensuring consistency across the development team<br>- By referencing this file, developers can easily identify and install necessary packages, facilitating smooth project execution.</td>
-			</tr>
-			</table>
-		</blockquote>
-	</details>
-	<details> <!-- fonts Submodule -->
-		<summary><b>fonts</b></summary>
-		<blockquote>
-			<table>
-			<tr>
-				<td><b><a href='Desktop/sucata/fonts/FKGroteskNeueTrial-Bold.otf'>FKGroteskNeueTrial-Bold.otf</a></b></td>
-				<td>- I'm ready to provide a summary<br>- Please go ahead and share the context details about the project<br>- I'll summarize the main purpose and use of the code file in relation to the entire codebase architecture.</td>
-			</tr>
-			<tr>
-				<td><b><a href='Desktop/sucata/fonts/FKGroteskNeueTrial-Regular.otf'>FKGroteskNeueTrial-Regular.otf</a></b></td>
-				<td>- I'm ready to provide a summary<br>- However, I don't see any context or code file provided<br>- Please share the relevant information, and I'll be happy to assist you in delivering a succinct summary of the main purpose and use of the code file within the entire codebase architecture.</td>
-			</tr>
-			<tr>
-				<td><b><a href='Desktop/sucata/fonts/Horizon.otf'>Horizon.otf</a></b></td>
-				<td>- **Summary:**
-
-The provided code file is a crucial component of our overall microservices-based application architecture<br>- Its primary purpose is to facilitate seamless communication and data exchange between different services, enabling efficient integration and scalability.
-
-By leveraging industry-standard protocols such as RESTful APIs and message queues (e.g., RabbitMQ), this code achieves the following key objectives:
-
-*   **Service Decoupling**: Allows individual services to operate independently, reducing dependencies and increasing fault tolerance.
-*   **Scalability**: Enables horizontal scaling by distributing incoming requests across multiple instances of each service.
-*   **Data Consistency**: Ensures data integrity through standardized APIs and message queues, minimizing the risk of data inconsistencies.
-
-In the context of our larger codebase, this component plays a vital role in enabling:
-
-*   **API Gateway Integration**: Facilitates secure and efficient communication between the API gateway and various services.
-*   **Service Discovery**: Enables dynamic service registration and discovery, ensuring that services can find each other at runtime.
-*   **Load Balancing**: Distributes incoming traffic across multiple instances of each service, optimizing resource utilization.
-
-By understanding the purpose and functionality of this code file, we can better appreciate its significance in our overall application architecture and make informed decisions about its maintenance, updates, and integration with other components.</td>
-			</tr>
-			</table>
-		</blockquote>
-	</details>
-</details>
-
----
 ##  Getting Started
 
 ###  Prerequisites
 
-Before getting started with sucata, ensure your runtime environment meets the following requirements:
+Antes de começar a usar o Sucata, certifique-se de que o ambiente de execução atenda aos seguintes requisitos:
 
-- **Programming Language:** Error detecting primary_language: {'py': 1, 'txt': 1, 'otf': 3}
-- **Package Manager:** Pip
+- **Linguagem de Programação:** Python (nível básico recomendado)
+- **Gerenciador de Pacotes:** Pip
 
 
 ###  Installation
 
-Install sucata using one of the following methods:
+Siga o passo a passo para instalar o sucata
 
 **Build from source:**
 
-1. Clone the sucata repository:
+1. Clone o repositório do Sucata:
 ```sh
-❯ git clone ../sucata
+❯ git clone https://github.com/pedronalis/sucata
 ```
 
-2. Navigate to the project directory:
+2. Entre no diretório:
 ```sh
 ❯ cd sucata
 ```
 
-3. Install the project dependencies:
+3. Instale as dependências:
 
 
-**Using `pip`** &nbsp; [<img align="center" src="" />]()
+**Use `pip`** &nbsp; [<img align="center" src="" />]()
 
 ```sh
-❯ echo 'INSERT-INSTALL-COMMAND-HERE'
+❯ echo 'pip install -r requirements.txt'
 ```
 
 
 
 
 ###  Usage
-Run sucata using the following command:
+Rode o Sucata utilizando o comando:
 **Using `pip`** &nbsp; [<img align="center" src="" />]()
 
 ```sh
-❯ echo 'INSERT-RUN-COMMAND-HERE'
+❯ echo 'python app.py'
 ```
 
 
