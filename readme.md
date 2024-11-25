@@ -1,211 +1,163 @@
+
+---
+
 <p align="center">
     <img src="./img/sucata_hello.png" align="center" width="30%">
 </p>
-<p align="center"><h1 align="center">Olá, eu sou o SUCATA.</h1></p>
+<h1 align="center">Olá, eu sou o SUCATA.</h1>
 <p align="center">
-	<em>Um tradutor de legendas que usa modelos de Inteligência Artificial Open-Source.</em>
+	<em>Um tradutor de legendas que utiliza modelos de Inteligência Artificial Open-Source.</em>
 </p>
 <p align="center">
-	<!-- local repository, no metadata badges. --></p>
-<p align="center">Desenvolvido em:</p>
-<p align="center">
-	<img src="https://img.shields.io/badge/Python-3776AB.svg?style=default&logo=Python&logoColor=white" alt="Python">
+	<img src="https://img.shields.io/badge/Python-3776AB.svg?style=flat-square&logo=Python&logoColor=white" alt="Python">
+	<img src="https://img.shields.io/badge/Tkinter-GUI-yellow" alt="Tkinter">
+	<img src="https://img.shields.io/badge/OpenSource-%E2%9D%A4-red" alt="OpenSource">
 </p>
-<br>
-
-##  Table of Contents
-
-- [ Overview](#-overview)
-- [ Features](#-features)
-- [ Project Structure](#-project-structure)
-- [ Getting Started](#-getting-started)
-  - [ Prerequisites](#-prerequisites)
-  - [ Installation](#-installation)
-  - [ Usage](#-usage)
-  - [ Testing](#-testing)
-- [ Project Roadmap](#-project-roadmap)
-- [ Contributing](#-contributing)
-- [ License](#-license)
-- [ Acknowledgments](#-acknowledgments)
 
 ---
 
-##  Overview
+## 📖 Sumário
 
-Sucata é uma ferramenta de código aberto que extrai e traduz legendas de arquivos MKV, oferecendo uma interface amigável para seleção de arquivos e trilhas. Além de também traduzir legendas .srt, .ass e .ssa.
-
-Utilizando um prompt extremamente refinado para que a legenda possa ter a melhor qualidade possível.
+- [Visão Geral](#visão-geral)
+- [Funcionalidades](#funcionalidades)
+- [Estrutura do Projeto](#estrutura-do-projeto)
+- [Como Começar](#como-começar)
+  - [Pré-requisitos](#pré-requisitos)
+  - [Instalação](#instalação)
+  - [Como Usar](#como-usar)
+- [Testando](#testando)
+- [Roadmap do Projeto](#roadmap-do-projeto)
+- [Contribuindo](#contribuindo)
+- [Licença](#licença)
+- [Agradecimentos](#agradecimentos)
 
 ---
 
-##  Features
+## 🌟 Visão Geral
 
-| **Scalability** |                  |
-| :---:           | :---          |
-| 📈 Fato sobre Escalabilidade 1: A arquitetura baseada em microsserviços permite escalabilidade horizontal ao distribuir as requisições entre várias instâncias de cada serviço. |
-| 📈 📈 Fato sobre Escalabilidade 2: O balanceamento de carga é distribuído, otimizando a utilização de recursos e garantindo o processamento eficiente do tráfego recebido. |
-| 📈 Fato sobre Escalabilidade 3: A consistência dos dados é mantida por meio de APIs padronizadas e filas de mensagens, reduzindo o risco de inconsistências. |
+**Sucata** é uma ferramenta open-source projetada para extrair e traduzir legendas de arquivos MKV, além de processar diretamente arquivos `.srt`, `.ass` e `.ssa`. Com uma interface amigável, o Sucata utiliza **modelos de linguagem baseados em IA**, como o Llama, para fornecer traduções de alta qualidade, preservando o contexto e o estilo das falas originais.
 
 ---
 
-##  Project Structure
+## ⚙️ Funcionalidades
 
-```sh
+- **Extração de Legendas**:
+  - Compatível com faixas de legendas em arquivos MKV.
+  - Seleção de faixas via GUI para melhor usabilidade.
+  
+- **Tradução Inteligente**:
+  - Suporte a arquivos `.srt`, `.ass` e `.ssa`.
+  - Adaptação contextual de gírias, expressões culturais e tons emocionais.
+
+- **Interface Gráfica**:
+  - Desenvolvida com `Tkinter`, proporciona simplicidade e acessibilidade para usuários.
+
+- **Compatibilidade**:
+  - Suporte para múltiplos idiomas, incluindo inglês, espanhol, francês, japonês, e mais.
+
+---
+
+## 📂 Estrutura do Projeto
+
+```bash
 └── sucata/
-    ├── app.py
-    ├── fonts
+    ├── app.py                # Arquivo principal do projeto
+    ├── fonts/                # Fontes utilizadas na interface
     │   ├── FKGroteskNeueTrial-Bold.otf
     │   ├── FKGroteskNeueTrial-Regular.otf
     │   └── Horizon.otf
-    ├── img
+    ├── img/                  # Imagens do projeto
     │   ├── sucata_hello.png
     │   └── sucata_icon.ico
-    └── requirements.txt
+    ├── requirements.txt      # Dependências do projeto
+    └── README.md             # Este arquivo
 ```
-
-
-###  Project Index
-<details open>
-	<summary><b><code>SUCATA/</code></b></summary>
-	<details> <!-- __root__ Submodule -->
-		<summary><b>Root</b></summary>
-		<blockquote>
-			<table>
-			<tr>
-				<td><b><a href='Desktop/sucata/app.py'>app.py</a></b></td>
-				<td>- **Sumário:**
-
-O arquivo `app.py` serve como o ponto de entrada principal para uma aplicação que extrai legendas de arquivos MKV utilizando a biblioteca `pysubs2`.<br>  
-- O código realiza essa tarefa por meio de uma interface gráfica (GUI) construída com Tkinter, permitindo que os usuários selecionem um arquivo MKV e especifiquem a faixa de legenda desejada.<br>  
-- Ao ser executado, a aplicação combina ferramentas de linha de comando (como o `mkvextract`) com modelos de aprendizado de máquina (via PyTorch e Transformers) para extrair a faixa de legenda especificada do arquivo MKV selecionado.</td>
-<td>
-
-**Key Functionality:**
-
-- Oferece uma interface amigável para selecionar um arquivo MKV e especificar a faixa de legenda desejada.
-- Utiliza o pysubs2 para extrair a faixa de legenda especificada do arquivo MKV selecionado.
-- Emprega modelos de aprendizado de máquina (via PyTorch e Transformers) para aumentar a precisão na extração de legendas.
-</tr></td>
-		</table>
-		</blockquote>
-</details open>
-
-##  Getting Started
-
-###  Prerequisites
-
-Antes de começar a usar o Sucata, certifique-se de que o ambiente de execução atenda aos seguintes requisitos:
-
-- **Linguagem de Programação:** Python (nível básico recomendado)
-- **Gerenciador de Pacotes:** Pip
-
-
-###  Installation
-
-Siga o passo a passo para instalar o sucata
-
-**Build from source:**
-
-1. Clone o repositório do Sucata:
-```sh
-❯ git clone https://github.com/pedronalis/sucata
-```
-
-2. Entre no diretório:
-```sh
-❯ cd sucata
-```
-
-3. Instale as dependências:
-
-
-**Use `pip`** &nbsp; [<img align="center" src="" />]()
-
-```sh
-❯ echo 'pip install -r requirements.txt'
-```
-
-
-
-
-###  Usage
-Rode o Sucata utilizando o comando:
-**Using `pip`** &nbsp; [<img align="center" src="" />]()
-
-```sh
-❯ echo 'python app.py'
-```
-
-
-###  Testing
-Run the test suite using the following command:
-**Using `pip`** &nbsp; [<img align="center" src="" />]()
-
-```sh
-❯ echo 'INSERT-TEST-COMMAND-HERE'
-```
-
-
----
-##  Project Roadmap
-
-- [X] **`Task 1`**: <strike>Implement feature one.</strike>
-- [ ] **`Task 2`**: Implement feature two.
-- [ ] **`Task 3`**: Implement feature three.
 
 ---
 
-##  Contributing
+## 🚀 Como Começar
 
-- **💬 [Join the Discussions](https://LOCAL/Desktop/sucata/discussions)**: Share your insights, provide feedback, or ask questions.
-- **🐛 [Report Issues](https://LOCAL/Desktop/sucata/issues)**: Submit bugs found or log feature requests for the `sucata` project.
-- **💡 [Submit Pull Requests](https://LOCAL/Desktop/sucata/blob/main/CONTRIBUTING.md)**: Review open PRs, and submit your own PRs.
+### 🛠️ Pré-requisitos
 
-<details closed>
-<summary>Contributing Guidelines</summary>
+- **Python**: Requerido o Python 3.9 ou superior.
+- **Pip**: Gerenciador de pacotes do Python.
+- **Ferramentas Externas**:
+  - `mkvextract` e `mkvmerge` para manipulação de arquivos MKV.
+- Conta na **Hugging Face** (opcional): Necessária para acessar alguns modelos de IA, como o Llama.
 
-1. **Fork the Repository**: Start by forking the project repository to your LOCAL account.
-2. **Clone Locally**: Clone the forked repository to your local machine using a git client.
-   ```sh
-   git clone C:\Users\Pedro\Desktop\sucata
-   ```
-3. **Create a New Branch**: Always work on a new branch, giving it a descriptive name.
-   ```sh
-   git checkout -b new-feature-x
-   ```
-4. **Make Your Changes**: Develop and test your changes locally.
-5. **Commit Your Changes**: Commit with a clear message describing your updates.
-   ```sh
-   git commit -m 'Implemented new feature x.'
-   ```
-6. **Push to LOCAL**: Push the changes to your forked repository.
-   ```sh
-   git push origin new-feature-x
-   ```
-7. **Submit a Pull Request**: Create a PR against the original project repository. Clearly describe the changes and their motivations.
-8. **Review**: Once your PR is reviewed and approved, it will be merged into the main branch. Congratulations on your contribution!
-</details>
+### 📦 Instalação
 
-<details closed>
-<summary>Contributor Graph</summary>
-<br>
-<p align="left">
-   <a href="https://LOCAL{/Desktop/sucata/}graphs/contributors">
-      <img src="https://contrib.rocks/image?repo=Desktop/sucata">
-   </a>
-</p>
-</details>
+1. **Clone o Repositório**:
+   ```bash
+   git clone https://github.com/pedronalis/sucata.git
+   ```
+2. **Acesse o Diretório**:
+   ```bash
+   cd sucata
+   ```
+3. **Instale as Dependências**:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Configure o Modelo (opcional)**:
+   - Para usar o **Llama 3.1**, solicite acesso na [Hugging Face](https://huggingface.co/meta-llama).
+   - Caso não tenha acesso, utilize um modelo alternativo open-source.
 
 ---
 
-##  License
+### 🪄 Como Usar
 
-This project is protected under the [SELECT-A-LICENSE](https://choosealicense.com/licenses) License. For more details, refer to the [LICENSE](https://choosealicense.com/licenses/) file.
+1. Execute o programa:
+   ```bash
+   python app.py
+   ```
+2. Na interface:
+   - **Selecione um arquivo MKV ou de legenda (.srt/.ass/.ssa)**.
+   - **Escolha o idioma de origem**.
+   - Clique em **Iniciar Tradução** e acompanhe o progresso no log.
 
 ---
 
-##  Acknowledgments
+### 🧪 Testando
 
-- List any resources, contributors, inspiration, etc. here.
+- **Simples**:
+  - Utilize um pequeno arquivo `.srt` para verificar a tradução.
+- **Avançado**:
+  - Teste com arquivos MKV com múltiplas faixas de legendas.
+
+---
+
+## 📅 Roadmap do Projeto
+
+- [x] **Versão Inicial**: Tradução de legendas e extração de faixas.
+- [ ] Adicionar suporte para tradução em lote.
+- [ ] Melhorar otimização de modelos com fine-tuning.
+- [ ] Implementar suporte a novos idiomas.
+
+---
+
+## 🤝 Contribuindo
+
+- **Fork o Repositório** e faça suas melhorias!
+- Envie um **Pull Request** com suas mudanças.
+- **Reporte Bugs** ou sugira melhorias.
+
+---
+
+## 📜 Licença
+
+Este projeto é protegido pela licença [GNU AGPL](https://choosealicense.com/licenses/agpl-3.0/). 
+
+Sinta-se livre para contribuir!❤️
+
+
+---
+
+## 🙏 Agradecimentos
+
+- **Hugging Face**: Pelo suporte aos modelos open-source.
+- **Tkinter Community**: Pela documentação acessível.
+- Todos os contribuidores e testers que ajudam a melhorar o projeto.
 
 ---
