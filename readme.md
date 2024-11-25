@@ -64,38 +64,30 @@ Utilizando um prompt extremamente refinado para que a legenda possa ter a melhor
 ```
 
 
-### Project Index
-
+###  Project Index
 <details open>
-  <summary><b><code>SUCATA/</code></b></summary>
-  <details> <!-- __root__ Submodule -->
-    <summary><b>Root</b></summary>
-    <blockquote>
-      <table>
-        <tr>
-          <td>
-            <b><a href="./app.py">app.py</a></b>
-          </td>
-          <td>
-            <b>Sumário:</b><br>
-            O arquivo <code>app.py</code> serve como o ponto de entrada principal para uma aplicação que extrai legendas de arquivos MKV utilizando a biblioteca <code>pysubs2</code>.
-            <ul>
-              <li>A aplicação possui uma interface gráfica (GUI) construída com Tkinter, permitindo que os usuários selecionem um arquivo MKV e especifiquem a faixa de legenda desejada.</li>
-              <li>Combina ferramentas de linha de comando, como <code>mkvextract</code>, com modelos de aprendizado de máquina (via PyTorch e Transformers) para realizar a extração de legendas.</li>
-            </ul>
+	<summary><b><code>SUCATA/</code></b></summary>
+	<details> <!-- __root__ Submodule -->
+		<summary><b>Root</b></summary>
+		<blockquote>
+			<table>
+			<tr>
+				<td><b><a href='Desktop/sucata/app.py'>app.py</a></b></td>
+				<td>- **Sumário:**
 
-            <b>Key Functionality:</b>
-            <ul>
-              <li>Interface amigável para selecionar um arquivo MKV e especificar a faixa de legenda desejada.</li>
-              <li>Utiliza <code>pysubs2</code> para processar a faixa de legenda do arquivo MKV.</li>
-              <li>Emprega modelos de aprendizado de máquina (via PyTorch e Transformers) para aumentar a precisão na extração de legendas.</li>
-            </ul>
-          </td>
-        </tr>
-      </table>
-    </blockquote>
-  </details>
-</details>
+O arquivo `app.py` serve como o ponto de entrada principal para uma aplicação que extrai legendas de arquivos MKV utilizando a biblioteca `pysubs2`.<br>  
+- O código realiza essa tarefa por meio de uma interface gráfica (GUI) construída com Tkinter, permitindo que os usuários selecionem um arquivo MKV e especifiquem a faixa de legenda desejada.<br>  
+- Ao ser executado, a aplicação combina ferramentas de linha de comando (como o `mkvextract`) com modelos de aprendizado de máquina (via PyTorch e Transformers) para extrair a faixa de legenda especificada do arquivo MKV selecionado.</td>
+<td>
+
+**Key Functionality:**
+
+- Oferece uma interface amigável para selecionar um arquivo MKV e especificar a faixa de legenda desejada.
+- Utiliza o pysubs2 para extrair a faixa de legenda especificada do arquivo MKV selecionado.
+- Emprega modelos de aprendizado de máquina (via PyTorch e Transformers) para aumentar a precisão na extração de legendas.
+</tr></td>
+		</table>
+		</blockquote>
 
 ##  Getting Started
 
