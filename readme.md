@@ -18,18 +18,18 @@
 
 ## 📖 Sumário
 
-- [Visão Geral](#visão-geral)
-- [Funcionalidades](#funcionalidades)
-- [Estrutura do Projeto](#estrutura-do-projeto)
-- [Como Começar](#como-começar)
-  - [Pré-requisitos](#pré-requisitos)
-  - [Instalação](#instalação)
-  - [Como Usar](#como-usar)
-- [Testando](#testando)
-- [Roadmap do Projeto](#roadmap-do-projeto)
-- [Contribuindo](#contribuindo)
-- [Licença](#licença)
-- [Agradecimentos](#agradecimentos)
+- [Visão Geral](#-visão-geral)
+- [Funcionalidades](#%EF%B8%8F-funcionalidades)
+- [Estrutura do Projeto](#-estrutura-do-projeto)
+- [Como Começar](#-como-começar)
+  - [Pré-requisitos](#%EF%B8%8F-pré-requisitos)
+  - [Instalação](#-instalação)
+  - [Como Usar](#-como-usar)
+- [Testando](#-testando)
+- [Roadmap do Projeto](#-roadmap-do-projeto)
+- [Contribuindo](#-contribuindo)
+- [Licença](#-licença)
+- [Agradecimentos](#-agradecimentos)
 
 ---
 
