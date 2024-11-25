@@ -1,9 +1,9 @@
 <p align="center">
-    <img src="./img/sucata_icon.ico" align="center" width="30%">
+    <img src="./img/sucata_hello.png" align="center" width="30%">
 </p>
-<p align="center"><h1 align="center">Olá, eu sou o SUCATA</h1></p>
+<p align="center"><h1 align="center">Olá, eu sou o SUCATA.</h1></p>
 <p align="center">
-	<em>Um tradutor de legendas que usa modelos de Inteligência Artificias open-source.</em>
+	<em>Um tradutor de legendas que usa modelos de Inteligência Artificial Open-Source.</em>
 </p>
 <p align="center">
 	<!-- local repository, no metadata badges. --></p>
@@ -84,7 +84,7 @@ O arquivo `app.py` serve como o ponto de entrada principal para uma aplicação 
 - Oferece uma interface amigável para selecionar um arquivo MKV e especificar a faixa de legenda desejada.
 - Utiliza o pysubs2 para extrair a faixa de legenda especificada do arquivo MKV selecionado.
 - Emprega modelos de aprendizado de máquina (via PyTorch e Transformers) para aumentar a precisão na extração de legendas.
-
+</td></tr>
 
 ##  Getting Started
 
