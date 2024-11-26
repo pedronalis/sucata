@@ -98,6 +98,7 @@ def selecionar_faixa_legenda(faixas_legenda, callback, root):
     janela_selecao = tk.Toplevel(root)
     janela_selecao.title("Selecione uma Faixa")
     janela_selecao.geometry("400x300")
+    janela_selecao.iconbitmap("img/sucata_icon.ico")
     janela_selecao.configure(bg="#181825")
     janela_selecao.transient(root)  # Define como janela modal
     janela_selecao.grab_set()
