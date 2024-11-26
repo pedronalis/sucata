@@ -145,6 +145,8 @@
 - Envie um **Pull Request** com suas mudanças.
 - **Reporte Bugs** ou sugira melhorias.
 
+<script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Pague-me um café', '#030303', 'J3J616MCB2');kofiwidget2.draw();</script>
+
 ---
 
 ## 📜 Licença
