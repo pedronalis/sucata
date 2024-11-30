@@ -184,7 +184,7 @@ def clean_translated_text(translated_text):
 
 
 def initialize_pipeline(
-        model_id="meta-llama/Llama-3.1-8B-Instruct"):   # Try "Qwen2.5-14B-Instruct" for better quality (High Hardware Costs) # Try "Qwen2.5-7B-Instruct" for better balance
+        model_id="meta-llama/Llama-3.1-8B-Instruct"):   # Try "Qwen/Qwen2.5-14B-Instruct" for better quality (High Hardware Costs) # Try "Qwen/Qwen2.5-7B-Instruct" for better balance
     """                                                                 # Use "unsloth/Meta-Llama-3.1-8B-Instruct" or "meta-llama/Llama-3.1-8B-Instruct" if you want a alternative.
     Initializes the text-generation pipeline with the specified model.
     """
