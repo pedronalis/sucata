@@ -13,505 +13,606 @@ import os
 import subprocess
 
 
-def extrair_legenda_mkv(arquivo_mkv, caminho_saida, faixa_id):
-    """
-    Extrai a faixa de legenda especificada de um arquivo MKV usando o mkvextract.
-    """
-    try:
-        # Define o caminho para o arquivo de saída
-        nome_legenda = os.path.join(caminho_saida, f"legenda_{faixa_id}.ass")  # Assume o formato .ass com base no output
+anime_variable = ""
 
-        # Comando para extrair a faixa de legenda
-        comando_extrair = [
+def extract_mkv_sub(mkv_file, file_output, track_id):
+    # Extract the selected track from an MKV file using mkvextract
+
+    try:
+        # Set the path for the output file
+        sub_name = os.path.join(file_output, f"sub_{track_id}.ass")  # Creates a .ass file for the output
+
+        # Command to extract the subtitle track
+        command_extract = [
             "mkvextract",
             "tracks",
-            arquivo_mkv,
-            f"{faixa_id}:{nome_legenda}"
+            mkv_file,
+            f"{track_id}:{sub_name}"
         ]
 
-        # Executa o comando de extração
-        resultado = subprocess.run(comando_extrair, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        # Execute the extraction command
+        result = subprocess.run(command_extract, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
-        # Verifica o retorno do comando
-        if resultado.returncode != 0:
-            raise Exception(f"Erro ao executar mkvextract: {resultado.stderr}")
+        # Check the command's return status
+        if result.returncode != 0:
+            raise Exception(f"Error executing mkvextract: {result.stderr}")
 
-        print(f"Legenda extraída com sucesso: {nome_legenda}")
-        return nome_legenda
+        print(f"Subtitle successfully extracted: {sub_name}")
+        return sub_name
     except Exception as e:
-        print(f"Erro ao extrair legenda: {e}")
+        print(f"Error extracting subtitle: {e}")
         return None
+
 
 
 import subprocess
 
-def obter_faixas_legenda(arquivo_mkv):
+def get_sub_tracks(mkv_file):
     """
-    Obtém as faixas de legenda disponíveis em um arquivo MKV usando o mkvmerge.
+    Retrieves the subtitle tracks available in an MKV file using mkvmerge.
     """
     try:
-        comando = ["mkvmerge", "-i", arquivo_mkv]
-        resultado = subprocess.run(comando, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        command = ["mkvmerge", "-i", mkv_file]
+        result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
-        if resultado.returncode != 0:
-            raise Exception(f"Erro ao executar mkvmerge: {resultado.stderr}")
+        if result.returncode != 0:
+            raise Exception(f"Error executing mkvmerge: {result.stderr}")
 
-        faixas_legenda = []
-        for linha in resultado.stdout.splitlines():
-            if "subtitles" in linha:
-                partes = linha.split(":")
-                faixa_id = int(partes[0].split()[-1])
-                detalhes = partes[1].strip()
+        sub_tracks = []
+        for line in result.stdout.splitlines():
+            if "subtitles" in line:
+                parts = line.split(":")
+                track_id = int(parts[0].split()[-1])
+                details = parts[1].strip()
                 
-                # Tentativa de extrair idioma, se disponível
-                idioma = "Desconhecido"
-                if "(" in detalhes and ")" in detalhes:
-                    parenteses = detalhes.split("(")[-1].split(")")[0]
-                    if len(parenteses) == 3:  # ISO 639-2 format (e.g., "eng", "por")
-                        idioma = parenteses
+                # Attempt to extract the language, if available
+                language = "Unknown"
+                if "(" in details and ")" in details:
+                    parentheses_content = details.split("(")[-1].split(")")[0]
+                    if len(parentheses_content) == 3:  # ISO 639-2 format (e.g., "eng", "por")
+                        language = parentheses_content
                 
-                nome = detalhes.replace(f"({idioma})", "").strip() if idioma != "Desconhecido" else detalhes
-                faixas_legenda.append({"id": faixa_id, "idioma": idioma, "nome": nome})
-        return faixas_legenda
+                name = (
+                    details.replace(f"({language})", "").strip() 
+                    if language != "Unknown" 
+                    else details
+                )
+                sub_tracks.append({"id": track_id, "language": language, "name": name})
+        return sub_tracks
     except Exception as e:
-        print(f"Erro ao obter faixas de legenda: {e}")
+        print(f"Error listing tracks: {e}")
         return []
 
 
-def selecionar_faixa_legenda(faixas_legenda, callback, root):
+def select_sub_tracks(sub_tracks, callback, root):
     """
-    Exibe uma janela modal para o usuário selecionar uma faixa de legenda.
-    Após a seleção, chama o callback com o ID da faixa selecionada.
+    Displays a modal window for the user to select a subtitle track.
+    After selection, calls the callback with the ID of the selected track.
     """
-    faixa_selecionada = tk.StringVar()
+    import tkinter as tk
+    from tkinter import messagebox
 
-    def confirmar_selecao():
-        selecionado = lista_faixas.curselection()
-        if not selecionado:
-            tk.messagebox.showwarning("Aviso", "Nenhuma faixa foi selecionada.", parent=janela_selecao)
+    selected_track = tk.StringVar()
+
+    def confirm_selection():
+        selected = track_listbox.curselection()
+        if not selected:
+            tk.messagebox.showwarning(
+                "Warning", "No track was selected.", parent=selection_window
+            )
             return
-        faixa = faixas_legenda[selecionado[0]]  # Acessa o dicionário da faixa selecionada
-        faixa_selecionada.set(faixa["id"])  # Retorna o ID da faixa
-        janela_selecao.destroy()  # Fecha a janela após seleção
+        track = sub_tracks[selected[0]]  # Access the dictionary of the selected track
+        selected_track.set(track["id"])  # Set the ID of the selected track
+        selection_window.destroy()  # Close the window after selection
 
-    # Janela secundária para exibir as opções
-    janela_selecao = tk.Toplevel(root)
-    janela_selecao.title("Selecione uma Faixa")
-    janela_selecao.geometry("400x300")
-    janela_selecao.iconbitmap("img/sucata_icon.ico")
-    janela_selecao.configure(bg="#181825")
-    janela_selecao.transient(root)  # Define como janela modal
-    janela_selecao.grab_set()
+    # Secondary window to display options
+    selection_window = tk.Toplevel(root)
+    selection_window.title("Select a Subtitle Track")
+    selection_window.iconbitmap("./img/sucata_icon.ico")
+    selection_window.geometry("400x300")
+    selection_window.configure(bg="#181825")
+    selection_window.transient(root)  # Set as a modal window
+    selection_window.grab_set()
 
     label = tk.Label(
-        janela_selecao, text="Selecione a faixa de legenda para traduzir:", bg="#181825", fg="white"
+        selection_window,
+        text="Select the subtitle track to process:",
+        bg="#181825",
+        fg="white"
     )
     label.pack(pady=10)
 
-    lista_faixas = tk.Listbox(
-        janela_selecao, bg="#202030", fg="#14b83e", height=10, width=50, selectmode=tk.SINGLE
+    track_listbox = tk.Listbox(
+        selection_window,
+        bg="#202030",
+        fg="#14b83e",
+        height=10,
+        width=50,
+        selectmode=tk.SINGLE
     )
-    for faixa in faixas_legenda:
-        lista_faixas.insert(
+    for track in sub_tracks:
+        track_listbox.insert(
             tk.END,
-            f"Faixa {faixa['id']} - {faixa['idioma']} ({faixa['nome']})",
+            f"Track {track['id']} - {track['language']} ({track['name']})",
         )
-    lista_faixas.pack(pady=10)
+    track_listbox.pack(pady=10)
 
-    btn_confirmar = tk.Button(
-        janela_selecao, text="Confirmar", command=confirmar_selecao, bg="#1E1E2A", fg="white"
+    confirm_button = tk.Button(
+        selection_window,
+        text="Confirm",
+        command=confirm_selection,
+        bg="#1E1E2A",
+        fg="white"
     )
-    btn_confirmar.pack(pady=10)
+    confirm_button.pack(pady=10)
 
-    janela_selecao.wait_window()
+    selection_window.wait_window()
 
-    if faixa_selecionada.get():
-        callback(faixa_selecionada.get())  # Chama o callback com o ID da faixa selecionada
+    if selected_track.get():
+        callback(selected_track.get())  # Call the callback with the ID of the selected track
     else:
-        callback(None)  # Nenhuma faixa foi selecionada
+        callback(None)  # No track was selected
 
 
-def remover_formatacao_legenda(eventos):
-    def limpar_texto(texto):
-        texto = re.sub(r"\{.*?\}", "", texto)
-        texto = re.sub(r"<.*?>", "", texto)
-        return texto.strip()
 
-    for evento in eventos:
-        evento.text = limpar_texto(evento.text)
-    return eventos
-
-
-def limpar_texto_traduzido(texto_traduzido):
+def remove_subtitle_formatting(events):
     """
-    Remove os delimitadores e qualquer conteúdo adicional que não faça parte do texto traduzido.
+    Removes formatting such as style tags and codes from subtitle events.
     """
-    # Verifica se os delimitadores estão presentes
-    if "<<<Texto a ser traduzido>>>" in texto_traduzido:
-        # Extrai o texto entre os delimitadores
-        texto_traduzido = texto_traduzido.split("<<<Texto a ser traduzido>>>")[1]
-        texto_traduzido = texto_traduzido.split("<<<Fim do texto>>>")[0]
+    def clean_text(text):
+        # Remove tags in { } and < >
+        text = re.sub(r"\{.*?\}", "", text)
+        text = re.sub(r"<.*?>", "", text)
+        return text.strip()
 
-    return texto_traduzido.strip()
+    for event in events:
+        event.text = clean_text(event.text)
+    return events
 
 
-def inicializar_pipeline(model_id="meta-llama/Meta-Llama-3.1-8B-Instruct"):
+def clean_translated_text(translated_text):
+    """
+    Removes delimiters and any additional content that is not part of the translated text.
+    """
+    # Check if delimiters are present
+    if "<<<Texto a ser traduzido>>>" in translated_text:
+        # Extract text between delimiters
+        translated_text = translated_text.split("<<<Texto a ser traduzido>>>")[1]
+        translated_text = translated_text.split("<<<Fim do texto>>>")[0]
+
+    return translated_text.strip()
+
+
+def initialize_pipeline(
+        model_id="meta-llama/Llama-3.1-8B-Instruct"):   # Try "Qwen2.5-14B-Instruct" for better quality (High Hardware Costs) # Try "Qwen2.5-7B-Instruct" for better balance
+    """                                                                 # Use "unsloth/Meta-Llama-3.1-8B-Instruct" or "meta-llama/Llama-3.1-8B-Instruct" if you want a alternative.
+    Initializes the text-generation pipeline with the specified model.
+    """
     try:
-        print("Carregando pipeline com bfloat16 e device map automático...")
+        print("Loading pipeline and automatic device mapping...")
         pipeline = transformers.pipeline(
             "text-generation",
             model=model_id,
-            model_kwargs={"torch_dtype": torch.bfloat16},
+            model_kwargs={"torch_dtype": torch.float32}, #float32 has better quality but high cost // float16 has better efficiency but less precision.
             device_map="auto",
         )
-        print("Pipeline carregado com sucesso.")
+        print("Pipeline loaded successfully.")
         return pipeline
     except Exception as e:
-        print(f"Erro ao carregar pipeline: {e}")
+        print(f"Error loading pipeline: {e}")
         raise
 
 
-def traduzir_eventos(eventos, pipeline, idioma_origem, idioma_destino, log_text, barra_progresso=None):
-    traducoes = []
-    if barra_progresso:
-        barra_progresso["maximum"] = len(eventos)
 
-    for i, evento in enumerate(eventos):
-        # Contexto: 5 linhas antes e 5 depois
-        contexto_anterior = " ".join([e.text for e in eventos[max(0, i-4):i]])
-        contexto_posterior = " ".join([e.text for e in eventos[i+1:min(len(eventos), i+5)]])
+def translate_events(events, pipeline, source_language, target_language, log_text, progress_bar=None):
+    translations = []
+    if progress_bar:
+        progress_bar["maximum"] = len(events)
 
-        # Construção do prompt com delimitadores claros
+    for i, event in enumerate(events):
+        # Context: 5 lines before and 5 after
+        previous_context = " ".join([e.text for e in events[max(0, i-3):i]])
+        next_context = " ".join([e.text for e in events[i+1:min(len(events), i+4)]])
+
+        # Construct the prompt with clear delimiters
         prompt_content = []
-        if contexto_anterior:
-            prompt_content.append(f"[Contexto anterior]: {contexto_anterior}")
-        prompt_content.append(f"[Texto a ser traduzido]: {evento.text}")
-        if contexto_posterior:
-            prompt_content.append(f"[Contexto posterior]: {contexto_posterior}")
+        if previous_context:
+            prompt_content.append(f"[Previous Context]: {previous_context}")
+        prompt_content.append(f"[Text to Translate]: {event.text}")
+        if next_context:
+            prompt_content.append(f"[Next Context]: {next_context}")
        
         prompt = [
             {"role": "system", "content": (
-                f"Você é um tradutor profissional especializado em legendas para filmes, séries e animes. "
-                f"Traduza do {idioma_origem} para o {idioma_destino} seguindo estas diretrizes:\n"
-                "- Preserve o tom, estilo e naturalidade do idioma original; adapte trechos para melhor coesão no {idioma_destino}.\n"
-                "- Adapte expressões, gírias e referências culturais com equivalência cultural, garantindo clareza ao público do {idioma_destino}.\n"
-                "- Antes de traduzir, analise o contexto emocional do texto e adapte o vocabulário para transmitir o mesmo impacto.\n"
-                "- Evite traduções literais que causem ambiguidades; reorganize frases para garantir fluidez e clareza.\n"
-                "- Use uma linguagem fluida, acessível e consistente, evitando redundâncias ou exageros.\n"
-                r"- Preserve a formatação original (espaçamentos '  ', quebras '\\N', estilos como {{\pos}}, {{\an}}, etc.).\n"                
-                "- Analise os tempos verbais com cuidado; traduza 'ser' e 'estar' conforme características permanentes ou temporárias.\n"
-                "- Garanta consistência na terminologia ao longo da tradução, criando um glossário interno se necessário.\n"
-                "- Reorganize as frases para garantir fluidez e clareza, sem comprometer o sentido original.\n"
-                "- A tradução deve ser clara, objetiva e concisa; evite textos truncados ou longos.\n"
-                "- Ajuste a terminologia de maneira consistente em todas as legendas, consultando o contexto geral do texto.\n"
-                "- Ao traduzir diálogos emocionais, capture o tom apropriado da cena, adaptando expressões e vocabulário.\n"
-                "- Garanta que o texto traduzido mantenha o alinhamento visual e respeite o layout do original.\n"
-                "- A tradução precisa ser estritamente apenas o texto indicado traduzido, sem observações, conteúdos extras ou antecipação de contextos.\n"
-                "- Considere os contextos para executar a tradução:\n\n"
-                f"[Contexto anterior]: {contexto_anterior}\n"
-                f"[Contexto posterior]: {contexto_posterior}\n"
+                f"You are a professional subtitle translator specializing in movies, TV series, and anime. Translate from {source_language} to {target_language} following these detailed guidelines:\n\n"
+                f"### Guidelines\n"
+                f"1. **Preserve Meaning and Tone:**\n"
+                f"   - Ensure translations match the original tone (e.g., formal, casual, humorous) and emotional impact.\n"
+                f"   - Avoid literal translations; prioritize fluency and contextually appropriate phrasing.\n"
+                f"   - Reorganize sentences as needed for clarity and fluency in {target_language}.\n\n"
+                f"2. **Context Awareness:**\n"
+                f"   - Use [Previous Context] and [Next Context] to guide translations.\n"
+                f"   - For ambiguous lines, prefer a neutral tone while preserving intent.\n"
+                f"   - Adapt cultural references, idioms, and slang to equivalents that resonate with the target audience.\n\n"
+                f"3. **Technical Accuracy:**\n"
+                f"   - Retain all formatting tags (e.g., {{\\blur}}, {{\\pos}}, {{\\an}}) and ensure no tag is altered.\n"
+                f"   - Interpret '\\N' as a line break and maintain its position.\n"
+                f"   - Ensure the translated text respects subtitle constraints (e.g., maximum character count and alignment).\n\n"
+                f"4. **Consistency and Quality:**\n"
+                f"   - Maintain consistency in terminology and style throughout.\n"
+                f"   - Use formal or neutral equivalents for informal phrases unless explicitly casual.\n"
+                f"   - Verify verbs are correctly conjugated for tense, nuance, and tone.\n"
+                f"   - Check grammar, spelling, and punctuation for accuracy.\n\n"
+                f"{anime_variable}"
+                f"**Final Checklist:**\n"
+                f"   - Is the translation fluent, natural, and free of literal errors?\n"
+                f"   - Are all formatting tags intact and unaltered?\n"
+                f"   - Does the text respect subtitle constraints and character limits?\n"
+                f"   - Were cultural references adapted naturally to the target audience?\n"
+                f"   - Is the output consistent with the original meaning and tone?\n\n"
             )},
-            {"role": "user", "content": f"Traduza apenas o texto a seguir, seguindo rigorosamente todas as diretrizes: {evento.text}"}
+            {"role": "user", "content": (
+                f"### Contextual Information\n"
+                f"- [Previous Context]: {previous_context if previous_context else 'No additional context available.'}\n"
+                f"- [Next Context]: {next_context if next_context else 'No additional context available.'}\n\n"
+                f"### Translation Task\n"
+                f"Translate the following text according to the guidelines provided. Respond **only** with the translated version of the text from {event.text}, (including preserved tags). Ensure no JSON structure or commentary is included in the response. No additional commentary, notes, or explanations are allowed.\n\n"
+                f"{event.text}"
+            )}
         ]
 
 
         try:
-            # Gera a tradução usando o pipeline
+            # Generate translation using the pipeline
             output = pipeline(prompt, max_new_tokens=1024)
-            print(f"Saída do pipeline para o evento {i + 1}: {output}")  # Debugging
+            print(f"Output for line {i + 1}:\n\nOriginal:{event.text}\n\nTraslated:{output[0]["generated_text"][-1]}")  # Debugging
 
-             # Extrair a tradução do objeto gerado
+            # Extract the translation from the output
             if isinstance(output, list):
-                mensagens = output[0].get("generated_text", [])
-                if isinstance(mensagens, list):
-                    for mensagem in mensagens:
-                        if mensagem.get("role") == "assistant":
-                            texto_traduzido = mensagem.get("content", "").strip()
-                            texto_traduzido = limpar_texto_traduzido(texto_traduzido)  # Limpa os delimitadores
-                            traducoes.append(texto_traduzido)
+                messages = output[0].get("generated_text", [])
+                if isinstance(messages, list):
+                    for message in messages:
+                        if message.get("role") == "assistant":
+                            translated_text = message.get("content", "").strip()
+                            translated_text = clean_translated_text(translated_text)  # Clean delimiters
+                            translations.append(translated_text)
                             break
                     else:
-                        raise ValueError("Nenhuma mensagem com 'role': 'assistant' encontrada.")
+                        raise ValueError("No message with 'role': 'assistant' found.")
                 else:
-                    raise ValueError("Formato inesperado em 'generated_text'.")
+                    raise ValueError("Unexpected format in 'generated_text'.")
             else:
-                raise ValueError(f"Formato inesperado de saída: {output}")
+                raise ValueError(f"Unexpected output format: {output}")
         except Exception as e:
-            log_text.insert(tk.END, f"Erro ao traduzir evento {i + 1}: {e}\n")
-            traducoes.append(evento.text)  # Mantém o texto original em caso de erro
+            log_text.insert(tk.END, f"Error translating event {i + 1}: {e}\n")
+            translations.append(event.text)  # Keep the original text in case of error
 
-        # Atualizar barra de progresso e logs
-        if barra_progresso:
-            barra_progresso["value"] += 1
-            barra_progresso.update()
+        # Update progress bar and logs
+        if progress_bar:
+            progress_bar["value"] += 1
+            progress_bar.update()
 
         if log_text and i % 10 == 0:
-            log_text.insert(tk.END, f"Traduzido {i + 1}/{len(eventos)} linhas...\n")
+            log_text.insert(tk.END, f"Translated {i + 1}/{len(events)} lines...\n")
             log_text.see(tk.END)
             log_text.update()
 
-    return traducoes
+    return translations
 
 
-def salvar_legenda(subs, arquivo_saida):
+
+def save_subtitle(subs, output_file):
     try:
-        subs.save(arquivo_saida)
-        print(f"Legenda traduzida salva em: {arquivo_saida}")
+        subs.save(output_file)
+        print(f"Translated subtitle saved in: {output_file}")
     except Exception as e:
-        print(f"Erro ao salvar legenda: {e}")
+        print(f"Error saving subtitle: {e}")
 
 
-def processar_legenda(arquivo_legenda, idioma_origem, idioma_destino, log_text, barra_progresso, pipeline):
+def process_subtitle(subtitle_file, source_language, target_language, log_text, progress_bar, pipeline):
     try:
-        print(f"Processando o arquivo: {arquivo_legenda}")  # Log para verificar o arquivo
-        subs = pysubs2.load(arquivo_legenda)  # Carrega a legenda
-        print(f"Número de eventos carregados: {len(subs)}")  # Verifica se os eventos foram carregados
-        if arquivo_legenda.endswith(".srt"):
-            # Limpeza de formatação
-            eventos = remover_formatacao_legenda([event for event in subs if event.text.strip()])
-        elif arquivo_legenda.endswith(".ass") or arquivo_legenda.endswith(".ssa"):
-            eventos = [event for event in subs if event.text.strip()]
+        print(f"Processing file: {subtitle_file}")  # Log to check the file
+        subs = pysubs2.load(subtitle_file)  # Load the subtitle
+        print(f"Number of events loaded: {len(subs)}")  # Verify if events were loaded
+        if subtitle_file.endswith(".srt"):
+            # Clean formatting
+            events = remove_subtitle_formatting([event for event in subs if event.text.strip()])
+        elif subtitle_file.endswith(".ass") or subtitle_file.endswith(".ssa"):
+            events = [event for event in subs if event.text.strip()]
         else:
-            raise ValueError("Formato de legenda não suportado.")
+            raise ValueError("Unsupported subtitle format.")
 
-        # Traduz eventos
-        traducoes = traduzir_eventos(eventos, pipeline, idioma_origem, idioma_destino, log_text, barra_progresso)
+        # Translate events
+        translations = translate_events(events, pipeline, source_language, target_language, log_text, progress_bar)
 
-        for evento, traducao in zip(eventos, traducoes):
-            evento.text = traducao
+        for event, translation in zip(events, translations):
+            event.text = translation
 
-        # Salva a legenda traduzida
-        subs.save(arquivo_legenda.replace(".srt", "_traduzido.srt").replace(".ass", "_traduzido.ass").replace(".ssa", "_traduzido.ssa"))
-        print(f"Legenda traduzida salva com sucesso.")
-        return arquivo_legenda.replace(".srt", "_traduzido.srt").replace(".ass", "_traduzido.ass").replace(".ssa", "_traduzido.ssa")
+        # Save the translated subtitle
+        output_file = subtitle_file.replace(".srt", "_translated.srt").replace(".ass", "_translated.ass").replace(".ssa", "_translated.ssa")
+        subs.save(output_file)
+        print("Translated subtitle successfully saved.")
+        return output_file
     except Exception as e:
-        print(f"Erro ao processar a legenda: {e}")
+        print(f"Error processing subtitle: {e}")
         return None
     
 
-def processar_arquivo(arquivo, idioma_origem, idioma_destino, log_text, barra_progresso):
-    if arquivo.endswith(".mkv"):
-        # Lidar com arquivos MKV
-        caminho_saida = os.path.dirname(arquivo)
-        legenda_extraida = extrair_legenda_mkv(arquivo, caminho_saida)
-        if legenda_extraida:
-            legenda_traduzida = processar_legenda(legenda_extraida, idioma_origem, idioma_destino, log_text, barra_progresso)
-            if legenda_traduzida and (legenda_traduzida.endswith(".ass") or legenda_traduzida.endswith(".ssa")):
-                saida_mkv = os.path.join(caminho_saida, "output_traduzido.mkv")
-                reembutir_legenda_mkv(arquivo, legenda_traduzida, saida_mkv)
-                log_text.insert(tk.END, f"Processamento concluído. Arquivo MKV salvo em: {saida_mkv}\n")
+def process_file(file, source_language, target_language, log_text, progress_bar):
+    if file.endswith(".mkv"):
+        # Handle MKV files
+        file_output = os.path.dirname(file)
+        extracted_subtitle = extract_mkv_sub(file, file_output)
+        if extracted_subtitle:
+            translated_subtitle = process_subtitle(extracted_subtitle, source_language, target_language, log_text, progress_bar)
+            if translated_subtitle and (translated_subtitle.endswith(".ass") or translated_subtitle.endswith(".ssa")):
+                output_mkv = os.path.join(file_output, "output_translated.mkv")
+                embed_subtitle_in_mkv(file, translated_subtitle, output_mkv)
+                log_text.insert(tk.END, f"Processing completed. MKV file saved in: {output_mkv}\n")
             else:
-                log_text.insert(tk.END, "Legenda SRT traduzida salva separadamente.\n")
+                log_text.insert(tk.END, "Translated SRT subtitle saved separately.\n")
         else:
-            log_text.insert(tk.END, "Nenhuma legenda extraída do arquivo MKV.\n")
-    elif arquivo.endswith((".srt", ".ass", ".ssa")):
-        # Lidar com arquivos de legenda diretamente
-        legenda_traduzida = processar_legenda(arquivo, idioma_origem, idioma_destino, log_text, barra_progresso)
-        if legenda_traduzida:
-            log_text.insert(tk.END, f"Legenda traduzida salva em: {legenda_traduzida}\n")
+            log_text.insert(tk.END, "No subtitles extracted from the MKV file.\n")
+    elif file.endswith((".srt", ".ass", ".ssa")):
+        # Handle subtitle files directly
+        translated_subtitle = process_subtitle(file, source_language, target_language, log_text, progress_bar)
+        if translated_subtitle:
+            log_text.insert(tk.END, f"Translated subtitle saved in: {translated_subtitle}\n")
         else:
-            log_text.insert(tk.END, "Erro ao processar a legenda.\n")
+            log_text.insert(tk.END, "Error processing the subtitle.\n")
     else:
-        log_text.insert(tk.END, "Formato de arquivo não suportado.\n")
+        log_text.insert(tk.END, "Unsupported file format.\n")
 
 
-def reembutir_legenda_mkv(arquivo_mkv, legenda_traduzida, saida_mkv):
+def embed_subtitle_in_mkv(mkv_file, translated_subtitle, output_mkv):
     try:
-        mkv = MKVFile(arquivo_mkv)
-        mkv.add_track(legenda_traduzida)
-        mkv.mux(saida_mkv)
-        print(f"Arquivo MKV com legenda traduzida salvo como: {saida_mkv}")
+        mkv = MKVFile(mkv_file)
+        mkv.add_track(translated_subtitle)
+        mkv.mux(output_mkv)
+        print(f"MKV file with translated subtitle saved as: {output_mkv}")
     except Exception as e:
-        print(f"Erro ao reembutir a legenda: {e}")
+        print(f"Error embedding the subtitle: {e}")
 
 
-def iniciar_interface():
-        # Inicializar o pipeline globalmente
-    pipeline = None  # Inicialize como None para verificar erros de carregamento
+
+def start_interface():
+    # Initialize the pipeline globally
+    pipeline = None
 
     try:
-        pipeline = inicializar_pipeline()
+        pipeline = initialize_pipeline()
     except Exception as e:
-        print(f"Erro ao inicializar o pipeline: {e}")
-    
-    def carregar_arquivo():
-        arquivo = filedialog.askopenfilename(
-            filetypes=[("Arquivos de Legenda e MKV", "*.srt *.ass *.ssa *.mkv"),]
+        print(f"Error initializing the pipeline: {e}")
+
+    def load_file():
+        file = filedialog.askopenfilename(
+            filetypes=[("Subtitle and MKV Files", "*.srt *.ass *.ssa *.mkv")]
         )
-        entrada_arquivo.delete(0, tk.END)
-        entrada_arquivo.insert(0, arquivo)
+        file_input.delete(0, tk.END)
+        file_input.insert(0, file)
 
-    def iniciar_processamento():
-    # Função de processamento em uma thread separada
-        def tarefa():
+    def start_processing():
+        # Processing function in a separate thread
+        def task():
             try:
-                # Desativa o botão enquanto processa
-                btn_iniciar.config(state=tk.DISABLED)
-                barra_progresso.config(mode="indeterminate")
-                barra_progresso.start()
-                carregando_label.config(text="Processando...")
+                # Disable the button while processing
+                btn_start.config(state=tk.DISABLED)
+                progress_bar.config(mode="indeterminate")
+                progress_bar.start()
+                loading_label.config(text="Processing...")
 
-                # Recupera os valores da interface
-                arquivo = entrada_arquivo.get()
-                idioma_origem = dropdown_idioma_origem.get().split(" - ")[0] if dropdown_idioma_origem.get() else None
-                idioma_destino = "Português do Brasil"
+                # Retrieve values from the interface
+                file = file_input.get()
+                source_language = dropdown_source_language.get() if dropdown_source_language.get() else None
+                target_language = dropdown_target_language.get() if dropdown_target_language.get() else None
 
-                if not arquivo:
-                    log_text.insert(tk.END, "Por favor, selecione um arquivo.\n")
+                if not file:
+                    log_text.insert(tk.END, "Please select a file.\n")
                     return
-                if not idioma_origem:
-                    log_text.insert(tk.END, "Por favor, selecione o idioma de origem.\n")
+                if not source_language:
+                    log_text.insert(tk.END, "Please select the source language.\n")
                     return
 
-                # Decide o que fazer com base no tipo de arquivo
-                if arquivo.endswith(".mkv"):
-                    def processar_faixa(faixa_selecionada):
-                        if faixa_selecionada:
-                            faixa_id = int(faixa_selecionada)
-                            caminho_saida = os.path.dirname(arquivo)
-                            legenda_extraida = extrair_legenda_mkv(arquivo, caminho_saida, faixa_id)
-                            if legenda_extraida:
-                                legenda_traduzida = processar_legenda(legenda_extraida, idioma_origem, idioma_destino, log_text, barra_progresso, pipeline)
-                                if legenda_traduzida:
-                                    saida_mkv = os.path.join(caminho_saida, "output_traduzido.mkv")
-                                    reembutir_legenda_mkv(arquivo, legenda_traduzida, saida_mkv)
-                                    log_text.insert(tk.END, f"Processamento concluído. Arquivo MKV salvo em: {saida_mkv}\n")
+                # Decide what to do based on the file type
+                if file.endswith(".mkv"):
+                    def process_track(selected_track):
+                        if selected_track:
+                            track_id = int(selected_track)
+                            file_output = os.path.dirname(file)
+                            extracted_subtitle = extract_mkv_sub(file, file_output, track_id)
+                            if extracted_subtitle:
+                                translated_subtitle = process_subtitle(
+                                    extracted_subtitle,
+                                    source_language,
+                                    target_language,
+                                    log_text,
+                                    progress_bar,
+                                    pipeline,
+                                )
+                                if translated_subtitle:
+                                    output_mkv = os.path.join(file_output, "output_translated.mkv")
+                                    embed_subtitle_in_mkv(file, translated_subtitle, output_mkv)
+                                    log_text.insert(tk.END, f"Processing completed. MKV file saved in: {output_mkv}\n")
                                 else:
-                                    log_text.insert(tk.END, "Erro ao processar a legenda.\n")
+                                    log_text.insert(tk.END, "Error processing the subtitle.\n")
                             else:
-                                log_text.insert(tk.END, "Erro ao extrair a legenda selecionada.\n")
+                                log_text.insert(tk.END, "Error extracting the selected subtitle.\n")
                         else:
-                            log_text.insert(tk.END, "Nenhuma faixa foi selecionada.\n")
+                            log_text.insert(tk.END, "No track selected.\n")
 
-                    faixas_legenda = obter_faixas_legenda(arquivo)
-                    if faixas_legenda:
-                        selecionar_faixa_legenda(faixas_legenda, processar_faixa, root=janela)
+                    sub_tracks = get_sub_tracks(file)
+                    if sub_tracks:
+                        select_sub_tracks(sub_tracks, process_track, root=window)
                     else:
-                        log_text.insert(tk.END, "Nenhuma faixa de legenda encontrada no arquivo MKV.\n")
+                        log_text.insert(tk.END, "No subtitle tracks found in the MKV file.\n")
 
-                elif arquivo.endswith((".srt", ".ass", ".ssa")):
-                    # Processa arquivos de legenda diretamente
-                    log_text.insert(tk.END, "Processando legenda...\n")
-                    legenda_traduzida = processar_legenda(arquivo, idioma_origem, idioma_destino, log_text, barra_progresso, pipeline)
-                    if legenda_traduzida:
-                        log_text.insert(tk.END, f"Legenda traduzida salva em: {legenda_traduzida}\n")
+                elif file.endswith((".srt", ".ass", ".ssa")):
+                    # Process subtitle files directly
+                    log_text.insert(tk.END, "Processing subtitle...\n")
+                    translated_subtitle = process_subtitle(
+                        file, source_language, target_language, log_text, progress_bar, pipeline
+                    )
+                    if translated_subtitle:
+                        log_text.insert(tk.END, f"Translated subtitle saved in: {translated_subtitle}\n")
                     else:
-                        log_text.insert(tk.END, "Erro ao processar a legenda.\n")
+                        log_text.insert(tk.END, "Error processing the subtitle.\n")
                 else:
-                    log_text.insert(tk.END, "Formato de arquivo não suportado.\n")
+                    log_text.insert(tk.END, "Unsupported file format.\n")
 
             except Exception as e:
-                log_text.insert(tk.END, f"Erro durante o processamento: {e}\n")
+                log_text.insert(tk.END, f"Error during processing: {e}\n")
             finally:
-                # Reativa o botão e para a barra de progresso
-                btn_iniciar.config(state=tk.NORMAL)
-                barra_progresso.stop()
-                barra_progresso.config(mode="determinate")
-                carregando_label.config(text="")
+                # Re-enable the button and stop the progress bar
+                btn_start.config(state=tk.NORMAL)
+                progress_bar.stop()
+                progress_bar.config(mode="determinate")
+                loading_label.config(text="")
 
-        # Cria e inicia a thread
-        thread = threading.Thread(target=tarefa)
+        # Create and start the thread
+        thread = threading.Thread(target=task)
         thread.start()
 
+    # Interface setup
+    window = tk.Tk()
+    window.title("Sucata")
+    window.geometry("400x850")
+    window.configure(bg="#181825")
+    window.iconbitmap("img/sucata_icon.ico")
 
+    title_font = ImageFont.truetype("fonts/Horizon.otf", size=24)
+    subtitle_font = ImageFont.truetype("fonts/FKGroteskNeueTrial-Bold.otf", size=18)
 
-    janela = tk.Tk()
-    janela.title("Sucata")
-    janela.geometry("400x750")
-    janela.configure(bg="#181825")
-    janela.iconbitmap("img/sucata_icon.ico")
-
-    fonteTitulo = ImageFont.truetype("fonts/Horizon.otf", size=24)
-    fonteSubTitulo = ImageFont.truetype("fonts/FKGroteskNeueTrial-Bold.otf", size=18)
-
-    def criar_texto_imagem(texto, largura, altura, fonte, cor_fundo, cor_texto):
-        """Cria uma imagem com texto estilizado usando Pillow."""
-        img = Image.new("RGBA", (largura, altura), color=cor_fundo)
+    def create_text_image(text, width, height, font, bg_color, text_color):
+        """Creates a stylized text image using Pillow."""
+        img = Image.new("RGBA", (width, height), color=bg_color)
         draw = ImageDraw.Draw(img)
-        # Obter o tamanho do texto usando textbbox
-        bbox = draw.textbbox((0, 0), texto, font=fonte)
+        bbox = draw.textbbox((0, 0), text, font=font)
         w, h = bbox[2] - bbox[0], bbox[3] - bbox[1]
-        # Centralizar o texto na imagem
-        draw.text(((largura - w) // 2, (altura - h) // 2), texto, font=fonte, fill=cor_texto)
+        draw.text(((width - w) // 2, (height - h) // 2), text, justify="center", font=font, fill=text_color)
         return ImageTk.PhotoImage(img)
 
-    imagem = Image.open("img/sucata_hello.png")
-    imagem = imagem.resize((150, 150))  # Redimensionar, se necessário
-    imagem_tk = ImageTk.PhotoImage(imagem)
-    img_label = tk.Label(janela, image=imagem_tk, bg="#181825")
-    img_label.image = imagem_tk  # Referência da imagem
+    image = Image.open("img/sucata_hello.png")
+    image = image.resize((150, 150))
+    image_tk = ImageTk.PhotoImage(image)
+    img_label = tk.Label(window, image=image_tk, bg="#181825")
+    img_label.image = image_tk
     img_label.pack(pady=(20, 0))
 
-    # Título
-    titulo_img = criar_texto_imagem(
-        "Olá, sou o Sucata.",
-        400,
-        30,
-        fonteTitulo,
-        cor_fundo="#181825",
-        cor_texto="white",
+    title_img = create_text_image(
+        "Hello, I'm Sucata.", 400, 30, title_font, bg_color="#181825", text_color="white"
     )
-    title_label = tk.Label(janela, image=titulo_img, bg="#181825")
-    title_label.image = titulo_img
+    title_label = tk.Label(window, image=title_img, bg="#181825")
+    title_label.image = title_img
     title_label.pack(pady=(5, 7))
 
-    # Subtítulo
-    subtitulo_img = criar_texto_imagem(
-        "Sou um tradutor de legendas\nusando Inteligência Artificial.",
+    subtitle_img = create_text_image(
+        "I am a subtitle translator\nusing Open-Source A.I.",
         400,
         70,
-        fonteSubTitulo,
-        cor_fundo="#181825",
-        cor_texto="white",
+        subtitle_font,
+        bg_color="#181825",
+        text_color="white",
     )
-    subTitle_label = tk.Label(janela, image=subtitulo_img, bg="#181825")
-    subTitle_label.image = subtitulo_img
-    subTitle_label.pack(pady=(0,5))
+    subtitle_label = tk.Label(window, image=subtitle_img, bg="#181825")
+    subtitle_label.image = subtitle_img
+    subtitle_label.pack(pady=(0, 5))
 
+    lbl_file = tk.Label(window, text="Insert a subtitle file:", bg="#181825", fg="white")
+    lbl_file.pack()
+    file_input = tk.Entry(window, width=50)
+    file_input.pack()
+    btn_load = tk.Button(window, text="Select File", command=load_file, bg="#1E1E2A", fg="white")
+    btn_load.pack(pady=10)
 
-
-    lbl_arquivo = tk.Label(janela, text="Insira um arquivo de legenda:", bg="#181825", fg="white")
-    lbl_arquivo.pack()
-    entrada_arquivo = tk.Entry(janela, width=50)
-    entrada_arquivo.pack()
-    btn_carregar = tk.Button(janela, text="Selecionar Arquivo", command=carregar_arquivo, bg="#1E1E2A", fg="white")
-    btn_carregar.pack(pady=10)
-
-    lbl_idioma_origem = tk.Label(janela, text="Idioma de Origem:", bg="#181825", fg="white")
-    lbl_idioma_origem.pack()
-    idiomas_disponiveis = [
-        "en - Inglês",
-        "es - Espanhol",
-        "fr - Francês",
-        "de - Alemão",
-        "it - Italiano",
-        "ja - Japonês",
-        "ko - Coreano",
-        "zh - Chinês",
-        "ru - Russo",
-        "ar - Árabe",
+    lbl_source_language = tk.Label(window, text="Source Language:", bg="#181825", fg="white")
+    lbl_source_language.pack()
+    available_languages = [
+        "ar - Arabic",
+        "bn - Bengali",
+        "de - German",
+        "en - English",
+        "es - Spanish",
+        "fr - French",
+        "hi - Hindi",
+        "id - Indonesian",
+        "ja - Japanese",
+        "ko - Korean",
+        "lah - Western Punjabi",
+        "mr - Marathi",
+        "pt - Portuguese",
+        "pt-BR - Brazilian Portuguese",
+        "ru - Russian",
+        "ta - Tamil",
+        "te - Telugu",
+        "tr - Turkish",
+        "ur - Urdu",
+        "vi - Vietnamese",
+        "zh - Mandarin Chinese"
     ]
-    dropdown_idioma_origem = ttk.Combobox(janela, values=idiomas_disponiveis, width=15)
-    dropdown_idioma_origem.pack(pady=(0, 10))
-    dropdown_idioma_origem.set("en - Inglês")
+    dropdown_source_language = ttk.Combobox(window, values=available_languages, width=30)
+    dropdown_source_language.pack(pady=(0, 10))
+    dropdown_source_language.set("en - English")
 
-    btn_iniciar = tk.Button(janela, text="Iniciar Tradução", command=iniciar_processamento, bg="#1E1E2A", fg="white")
-    btn_iniciar.pack()
+    lbl_target_language = tk.Label(window, text="Target Language:", bg="#181825", fg="white")
+    lbl_target_language.pack()
+    dropdown_target_language = ttk.Combobox(window, values=available_languages, width=30)
+    dropdown_target_language.pack(pady=(0, 20))
+    dropdown_target_language.set("pt-BR - Brazilian Portuguese")
 
-    barra_progresso = ttk.Progressbar(janela, length=400, mode="determinate")
-    barra_progresso.pack(pady=10)
+    def change_AnimeMode():
+        global anime_variable  
+        if checkbox_AnimeMode.get():
+            anime_variable = (
+                "5. **Anime Mode:** Ensure translations adapt slang, honorifics, and cultural nuances for an audience familiar with otaku, nerd, and geek culture.\n"
+                f"   - Retain key otaku/geek/nerd terms (e.g., 'senpai,' 'baka,' 'itadakimasu,' 'OP,' 'Overpower') only if they are essential to the context or carry cultural significance that cannot be translated effectively.\n"
+                f"   - When retaining Japanese terms, provide clarity through the surrounding text if necessary.\n"
+                f"   - Adapt expressions to natural equivalents when the cultural reference is not critical for understanding or impact.\n"
+                f"   - Example:\n"
+                f"     - Original: 'You’re such a baka!'\n"
+                f"     - Translation: 'Você é tão idiota!' (but retain 'baka' if it adds cultural or emotional nuance).\n"
+                f"     - Original: 'Itadakimasu!'\n"
+                f"     - Translation: Retain 'Itadakimasu' if addressing an otaku audience, or adapt as 'Bom apetite!' for general audiences.\n\n"
+                f"   - Maintain honorifics (e.g., 'san,' 'kun,' 'chan') only if they add context or convey relationships and hierarchy important to the story. Otherwise, adapt to natural equivalents.\n"
+                f"   - Preserve the tone and style typical of anime dialogue (e.g., exaggerated expressions, comedic timing, or dramatic intensity).\n"
+                f"   - Avoid over-translating technical terms, catchphrases, or culturally embedded phrases; instead, consider footnotes or additional contextual cues if critical for understanding.\n"
+            )
+        else:
+            anime_variable = ""  
 
-    carregando_label = tk.Label(janela, text="", bg="#181825", fg="white")
-    carregando_label.pack()
+    # Inside your start_interface function:
+    checkbox_AnimeMode = tk.BooleanVar()  # Variable linked to Anime Mode checkbox
+    checkbox_AnimeMode.set(False)  # Default state: not checked
 
-    log_text = tk.Text(janela, height=10, wrap="word", bg="#202030", fg="#14b83e", insertbackground="white")
+    # Create the Anime Mode Checkbutton
+    animeMode = tk.Checkbutton(
+        window,
+        text="Anime Mode",
+        variable=checkbox_AnimeMode,
+        onvalue=True,
+        offvalue=False,
+        command=change_AnimeMode,
+        bg="#181825",
+        fg="#14b83e"
+    )
+    animeMode.pack(pady=10)  # Ensure the checkbox is displayed
+
+    btn_start = tk.Button(window, text="Start Translation", command=start_processing, bg="#1E1E2A", fg="white")
+    btn_start.pack()
+
+    progress_bar = ttk.Progressbar(window, length=400, mode="determinate")
+    progress_bar.pack(pady=10)
+
+    loading_label = tk.Label(window, text="", bg="#181825", fg="white")
+    loading_label.pack()
+
+    log_text = tk.Text(window, height=10, wrap="word", bg="#202030", fg="#14b83e", insertbackground="white")
     log_text.pack()
 
-    footer_label = tk.Label(janela, text="Desenvolvido com ❤️\npor Pedro Guina Saltareli.", font=("Courier New", 10), fg="white", bg="#181825")
+    footer_label = tk.Label(window, text="Developed with ❤️\nby Pedro Guina Saltareli.", font=("Courier New", 10), fg="white", bg="#181825")
     footer_label.pack(pady=5)
 
-    janela.mainloop()
+    window.mainloop()
 
 
 if __name__ == "__main__":
-    iniciar_interface()
+    start_interface()

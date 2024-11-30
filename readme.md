@@ -1,12 +1,13 @@
-
----
-
 <p align="center">
     <img src="./img/sucata_hello.png" align="center" width="30%">
 </p>
-<h1 align="center">Olá, eu sou o SUCATA.</h1>
 <p align="center">
-	<em>Um tradutor de legendas que utiliza modelos de Inteligência Artificial Open-Source.</em>
+    <a href="readme-pt_BR.md">🇧🇷 Leia em Português</a> |
+    <a href="readme.md">🇺🇸 Read in English</a>
+</p>
+<h1 align="center">Hello, I'm SUCATA.</h1>
+<p align="center">
+	<em>A subtitle translator powered by Open-Source Artificial Intelligence models.</em>
 </p>
 <p align="center">
 	<img src="https://img.shields.io/badge/Python-3776AB.svg?style=flat-square&logo=Python&logoColor=white" alt="Python">
@@ -16,152 +17,162 @@
 
 ---
 
-## 📖 Sumário
+## 📖 Table of Contents
 
-- [Visão Geral](#-visão-geral)
-- [Funcionalidades](#%EF%B8%8F-funcionalidades)
-- [Estrutura do Projeto](#-estrutura-do-projeto)
-- [Como Começar](#-como-começar)
-  - [Pré-requisitos](#%EF%B8%8F-pré-requisitos)
-  - [Instalação](#-instalação)
-  - [Como Usar](#-como-usar)
-- [Testando](#-testando)
-- [Roadmap do Projeto](#-roadmap-do-projeto)
-- [Contribuindo](#-contribuindo)
-- [Licença](#-licença)
-- [Agradecimentos](#-agradecimentos)
-
----
-
-## 🌟 Visão Geral
-
-**Sucata** é uma ferramenta open-source projetada para extrair e traduzir legendas de arquivos MKV, além de processar diretamente arquivos `.srt`, `.ass` e `.ssa`. Com uma interface amigável, o Sucata utiliza **modelos de linguagem baseados em IA**, como o Llama, para fornecer traduções de alta qualidade, preservando o contexto e o estilo das falas originais.
-
-<img src="./img/sucata_preview.jpeg" alt="Preview do Sucata" style="border-radius: 10px!important; display:block; overflow: hidden; margin: 0 auto;">
+- [Overview](#-overview)
+- [Features](#%EF%B8%8F-features)
+- [Project Structure](#-project-structure)
+- [Getting Started](#-getting-started)
+  - [Prerequisites](#%EF%B8%8F-prerequisites)
+  - [Installation](#-installation)
+  - [Usage](#-usage)
+- [Testing](#-testing)
+- [Important Note](#-important-note)
+- [Project Roadmap](#-project-roadmap)
+- [Contributing](#-contributing)
+- [License](#-license)
+- [Acknowledgments](#-acknowledgments)
 
 ---
 
-## ⚙️ Funcionalidades
+## 🌟 Overview
 
-- **Extração de Legendas**:
-  - Compatível com faixas de legendas em arquivos MKV.
-  - Seleção de faixas via GUI para melhor usabilidade.
+**Sucata** is an open-source tool designed to extract and translate subtitles from `.mkv` files, as well as process `.srt`, `.ass`, and `.ssa` subtitle files directly. Featuring a user-friendly interface, Sucata leverages **AI language models**, such as Llama, to deliver high-quality translations while preserving the context and style of the original dialogues.
+
+<img src="./img/sucata_preview.jpeg" alt="Sucata Preview" style="border-radius: 10px!important; display:block; overflow: hidden; margin: 0 auto;">
+
+---
+
+## ⚙️ Features
+
+- **Subtitle Extraction**:
+  - Compatible with subtitle tracks in MKV files.
+  - Track selection via GUI for enhanced usability.
   
-- **Tradução Inteligente**:
-  - Suporte a arquivos `.srt`, `.ass` e `.ssa`.
-  - Adaptação contextual de gírias, expressões culturais e tons emocionais.
+- **Intelligent Translation**:
+  - Support for `.srt`, `.ass`, and `.ssa` files.
+  - Contextual adaptation of slang, cultural expressions, and emotional tones.
 
-- **Interface Gráfica**:
-  - Desenvolvida com `Tkinter`, proporciona simplicidade e acessibilidade para usuários.
+- **Graphical User Interface**:
+  - Built with `Tkinter`, offering simplicity and accessibility.
 
-- **Compatibilidade**:
-  - Suporte para múltiplos idiomas, incluindo inglês, espanhol, francês, japonês, e mais.
+- **Multi-Language Support**:
+  - Supports multiple languages, including *Arabic, Bengali, English, French, German, Hindi, Indonesian, Japanese, Korean, Mandarin Chinese, Marathi, Portuguese, Brazilian Portuguese, Russian, Spanish, Tamil, Telugu, Turkish, Urdu, Vietnamese, and Western Punjabi.*
 
 ---
 
-## 📂 Estrutura do Projeto
+## 📂 Project Structure
 
 ```bash
 └── sucata/
-    ├── app.py                # Arquivo principal do projeto
-    ├── fonts/                # Fontes utilizadas na interface
+    ├── app.py                # Main project
+    ├── fonts/                # Utilized fonts
     │   ├── FKGroteskNeueTrial-Bold.otf
     │   ├── FKGroteskNeueTrial-Regular.otf
     │   └── Horizon.otf
-    ├── img/                  # Imagens do projeto
+    ├── img/                  # Project images
     │   ├── sucata_hello.png
-    │   └── sucata_icon.ico
-    ├── requirements.txt      # Dependências do projeto
-    └── README.md             # Este arquivo
+    │   ├── sucata_icon.ico
+    │   ├── sucata_preview.jpeg
+    │   └── kofi_pt-BR.png
+    ├── requirements.txt      # Project dependencies
+    └── README.md             # Universal Readme
+    └── README-pt-BR.md       # Portuguese Brazilian Readme
 ```
 
 ---
 
-## 🚀 Como Começar
+## 🚀 Getting Started
 
-### 🛠️ Pré-requisitos
+### 🛠️ Prerequisites
 
-- **Python**: Requerido o Python 3.9 ou superior.
-- **Pip**: Gerenciador de pacotes do Python.
-- **Ferramentas Externas**:
-  - `mkvextract` e `mkvmerge` para manipulação de arquivos MKV.
-- Conta na **Hugging Face** (opcional): Necessária para acessar alguns modelos de IA, como o Llama.
+- **Python**: Requires Python 3.9 or later.
+- **Pip**: Python's package manager.
+- **External Tools**:
+  - `mkvextract` and `mkvmerge` for MKV file handling.
+- A **Hugging Face** account (optional): Needed to access certain AI models like Llama.
 
-### 📦 Instalação
+### 📦 Installation
 
-1. **Clone o Repositório**:
+1. **Clone the Repository**:
    ```bash
    git clone https://github.com/pedronalis/sucata.git
    ```
-2. **Acesse o Diretório**:
+2. **Navigate to the Directory**:
    ```bash
    cd sucata
    ```
-3. **Instale as Dependências**:
+3. **Install Dependencies**:
    ```bash
    pip install -r requirements.txt
    ```
 
-4. **Configure o Modelo (opcional)**:
-   - Para usar o **Llama 3.1**, solicite acesso na [Hugging Face](https://huggingface.co/meta-llama).
-   - Caso não tenha acesso, utilize um modelo alternativo open-source.
+4. **Configure the Model (Optional)**:
+   - To use **Llama or Qwen Models**, request access from [Hugging Face](https://huggingface.co/meta-llama).
+   - If you don’t have access, use an alternative open-source model.
 
 ---
 
-### 🪄 Como Usar
+### 🪄 Usage
 
-1. Execute o programa:
+1. Run the program:
    ```bash
    python app.py
    ```
-2. Na interface:
-   - **Selecione um arquivo MKV ou de legenda (.srt/.ass/.ssa)**.
-   - **Escolha o idioma de origem**.
-   - Clique em **Iniciar Tradução** e acompanhe o progresso no log.
+2. In the interface:
+   - **Select an MKV or subtitle file (.srt/.ass/.ssa)**.
+   - **Choose the source language**.
+   - Click **Start Translation** and monitor the progress in the log.
 
 ---
 
-### 🧪 Testando
+### 🧪 Testing
 
-- **Simples**:
-  - Utilize um pequeno arquivo `.srt` para verificar a tradução.
-- **Avançado**:
-  - Teste com arquivos MKV com múltiplas faixas de legendas.
+- **Basic**:
+  - Use a small `.srt` file to test translations.
+- **Advanced**:
+  - Test with MKV files containing multiple subtitle tracks.
+
+---
+## 📝 Important Note
+
+This program **does not replace a professional translator** and does not guarantee 100% perfect translations. While it uses advanced Artificial Intelligence models, errors or contextual inaccuracies may occur in some translations.
+
+To improve results, you can **customize the prompt** inside the `app.py` file to fit your desired language and style. This can help the AI produce translations better tailored to your needs.
 
 ---
 
-## 📅 Roadmap do Projeto
+## 📅 Project Roadmap
 
-- [x] **Versão Inicial**: Tradução de legendas e extração de faixas.
-- [ ] Adicionar suporte para tradução em lote.
-- [ ] Melhorar otimização de modelos com fine-tuning.
-- [ ] Implementar suporte a novos idiomas.
-
----
-
-## 🤝 Contribuindo
-
-- **Fork o Repositório** e faça suas melhorias!
-- Envie um **Pull Request** com suas mudanças.
-- **Reporte Bugs** ou sugira melhorias.
-
-<a href='https://ko-fi.com/pedronalis' target='_blank'><img height='36' style='border:0px;height:36px;' src='./img/kofi3 (1).png' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
+- [x] **Initial Release**: Subtitle translation and track extraction.
+- [x] Implement support for additional languages.
+- [ ] Add support for batch translations.
+- [ ] Improve model optimization with fine-tuning.
 
 ---
 
-## 📜 Licença
+## 🤝 Contributing
 
-Este projeto é protegido pela licença [GNU AGPL](https://choosealicense.com/licenses/agpl-3.0/). 
+- **Fork the Repository** and make your improvements!
+- Submit a **Pull Request** with your changes.
+- **Report Bugs** or suggest enhancements.
 
-Sinta-se livre para contribuir!❤️
-
+<a href='https://ko-fi.com/pedronalis' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi3.png?v=6' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
 
 ---
 
-## 🙏 Agradecimentos
+## 📜 License
 
-- **Hugging Face**: Pelo suporte aos modelos open-source.
-- **Tkinter Community**: Pela documentação acessível.
-- Todos os contribuidores e testers que ajudam a melhorar o projeto.
+This project is licensed under the [GNU AGPL](https://choosealicense.com/licenses/agpl-3.0/). 
+
+Feel free to contribute! ❤️
+
+---
+
+## 🙏 Acknowledgments
+
+- **Hugging Face**: For supporting open-source models.
+- **Tkinter Community**: For accessible documentation.
+- All contributors and testers helping to improve the project.
 
 ---
