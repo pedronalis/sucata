@@ -193,7 +193,7 @@ def initialize_pipeline(
         pipeline = transformers.pipeline(
             "text-generation",
             model=model_id,
-            model_kwargs={"torch_dtype": torch.float32}, #float32 has better quality but high cost // float16 has better efficiency but less precision.
+            model_kwargs={"torch_dtype": torch.bfloat16}, #float32 has better quality but high cost // float16 has better efficiency but less precision.
             device_map="auto",
         )
         print("Pipeline loaded successfully.")
