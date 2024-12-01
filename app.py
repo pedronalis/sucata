@@ -184,8 +184,8 @@ def clean_translated_text(translated_text):
 
 
 def initialize_pipeline(
-        model_id="meta-llama/Llama-3.1-8B-Instruct"):   # Try "Qwen/Qwen2.5-14B-Instruct" for better quality (High Hardware Costs) # Try "Qwen/Qwen2.5-7B-Instruct" for better balance
-    """                                                                 # Use "unsloth/Meta-Llama-3.1-8B-Instruct" or "meta-llama/Llama-3.1-8B-Instruct" if you want a alternative.
+        model_id="Qwen/Qwen2.5-7B-Instruct"):   # Try "Qwen/Qwen2.5-14B-Instruct" for better quality (High Hardware Costs) # Try "Qwen/Qwen2.5-7B-Instruct" for better balance
+    """                                         # Alternative "meta-llama/Llama-3.1-8B-Instruct" or "NousResearch/Hermes-3-Llama-3.1-8B"
     Initializes the text-generation pipeline with the specified model.
     """
     try:
@@ -223,43 +223,62 @@ def translate_events(events, pipeline, source_language, target_language, log_tex
             prompt_content.append(f"[Next Context]: {next_context}")
        
         prompt = [
-            {"role": "system", "content": (
-                f"You are a professional subtitle translator specializing in movies, TV series, and anime. Translate from {source_language} to {target_language} following these detailed guidelines:\n\n"
-                f"### Guidelines\n"
-                f"1. **Preserve Meaning and Tone:**\n"
-                f"   - Ensure translations match the original tone (e.g., formal, casual, humorous) and emotional impact.\n"
-                f"   - Avoid literal translations; prioritize fluency and contextually appropriate phrasing.\n"
-                f"   - Reorganize sentences as needed for clarity and fluency in {target_language}.\n\n"
-                f"2. **Context Awareness:**\n"
-                f"   - Use [Previous Context] and [Next Context] to guide translations.\n"
-                f"   - For ambiguous lines, prefer a neutral tone while preserving intent.\n"
-                f"   - Adapt cultural references, idioms, and slang to equivalents that resonate with the target audience.\n\n"
-                f"3. **Technical Accuracy:**\n"
-                f"   - Retain all formatting tags (e.g., {{\\blur}}, {{\\pos}}, {{\\an}}) and ensure no tag is altered.\n"
-                f"   - Interpret '\\N' as a line break and maintain its position.\n"
-                f"   - Ensure the translated text respects subtitle constraints (e.g., maximum character count and alignment).\n\n"
-                f"4. **Consistency and Quality:**\n"
-                f"   - Maintain consistency in terminology and style throughout.\n"
-                f"   - Use formal or neutral equivalents for informal phrases unless explicitly casual.\n"
-                f"   - Verify verbs are correctly conjugated for tense, nuance, and tone.\n"
-                f"   - Check grammar, spelling, and punctuation for accuracy.\n\n"
-                f"{anime_variable}"
-                f"**Final Checklist:**\n"
-                f"   - Is the translation fluent, natural, and free of literal errors?\n"
-                f"   - Are all formatting tags intact and unaltered?\n"
-                f"   - Does the text respect subtitle constraints and character limits?\n"
-                f"   - Were cultural references adapted naturally to the target audience?\n"
-                f"   - Is the output consistent with the original meaning and tone?\n\n"
-            )},
-            {"role": "user", "content": (
-                f"### Contextual Information\n"
-                f"- [Previous Context]: {previous_context if previous_context else 'No additional context available.'}\n"
-                f"- [Next Context]: {next_context if next_context else 'No additional context available.'}\n\n"
-                f"### Translation Task\n"
-                f"Translate the following text according to the guidelines provided. Respond **only** with the translated version of the text from {event.text}, (including preserved tags). Ensure no JSON structure or commentary is included in the response. No additional commentary, notes, or explanations are allowed.\n\n"
-                f"{event.text}"
-            )}
+            {
+                "role": "system",
+                "content": (
+                    f"You are a professional subtitle translator specializing in movies, TV series, and anime. Translate from {source_language} to {target_language} following these detailed guidelines:\n\n"
+                    f"### Translation Guidelines\n"
+                    f"1. **Preserve Meaning and Tone:**\n"
+                    f"   - Ensure translations match the original tone (e.g., formal, casual, humorous) and emotional impact.\n"
+                    f"   - Avoid literal translations unless they are contextually appropriate.\n"
+                    f"   - Reorganize sentences as needed to sound natural and fluent in {target_language}.\n"
+                    f"   - Pay attention to nuances, cultural context, and idiomatic expressions.\n\n"
+                    f"2. **Context Awareness:**\n"
+                    f"   - Use [Previous Context] and [Next Context] to ensure coherent translations.\n"
+                    f"   - Resolve ambiguities by prioritizing naturalness over overly specific interpretations.\n"
+                    f"   - Adapt cultural references, idioms, and slang to resonate naturally with the target audience.\n\n"
+                    f"3. **Technical Accuracy:**\n"
+                    f"   - Retain all formatting tags (e.g., {{\\blur}}, {{\\pos}}, {{\\an}}) exactly as they appear.\n"
+                    f"   - Interpret '\\N' as a line break and preserve its position.\n"
+                    f"   - Ensure translated text respects subtitle constraints, including character limits.\n"
+                    f"   - Tags must never be altered, omitted, or repositioned.\n\n"
+                    f"4. **Consistency and Quality:**\n"
+                    f"   - Maintain consistent terminology and style across translations.\n"
+                    f"   - Use verbs and expressions appropriate to the tense, nuance, and tone of the original.\n"
+                    f"   - Proofread for grammar, spelling, and punctuation accuracy.\n"
+                    f"   - Translate informal or colloquial language contextually, considering the character and scene.\n\n"
+                    f"{anime_variable}\n"
+                    f"**Final Checklist:**\n"
+                    f"   - Is the translation fluent, natural, and free of literal errors?\n"
+                    f"   - Are all formatting tags intact and unaltered?\n"
+                    f"   - Does the text respect subtitle constraints and character limits?\n"
+                    f"   - Were cultural references adapted naturally for the target audience?\n"
+                    f"   - Is the output consistent with the original meaning, tone, and context?\n\n"
+                )
+            },      
+            {
+                    "role": "user",
+                    "content": (
+                        f"### Translation Task\n"
+                        f"1. Use the provided context below **only if it is available and makes sense for the given text**. Do not include it in the translation itself. The context should be used solely to ensure the translation aligns with the tone and meaning of the scene:\n"
+                        f"   - [Previous Context]: {previous_context if previous_context else 'No additional context available.'}\n"
+                        f"   - [Next Context]: {next_context if next_context else 'No additional context available.'}\n"
+                        f"\n"
+                        f"2. Translate only the text below into {target_language}, preserving:\n"
+                        f"   - The original tone and meaning.\n"
+                        f"   - All formatting tags (e.g., {{\\c&H1010A4&}}, {{\\pos}}, '\\N'). Do not interpret or modify the tags.\n"
+                        f"\n"
+                        f"3. Important Instructions:\n"
+                        f"   - Respond **only** with the translated text for the given line. Do not include any comments, explanations, or attempts to correct the translation.\n"
+                        f"   - If the line is ambiguous, provide the best possible translation based solely on the provided line.\n"
+                        f"   - If no context is available or the context is irrelevant, translate naturally and accurately.\n"
+                        f"\n"
+                        f"### Text to Translate:\n"
+                        f"{event.text}"
+                    )
+                }
         ]
+        
 
 
         try:
