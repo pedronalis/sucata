@@ -3,10 +3,14 @@
 <p align="center">
     <img src="./img/sucata_hello.png" align="center" width="30%">
 </p>
-<p align="center">
-    <a href="readme-pt_BR.md"><img style="width:35vw;"src="./img/readme-pt-br.png" ></img></a> 
-    <a href="readme.md"><img style="width:35vw;"src="./img/readme-un.png"  href="readme.md"></img></a>
-</p>
+<div style="display: flex; justify-content: center; gap: 10px;">
+    <a href="readme-pt_BR.md">
+        <img style="width:35vw;" src="./img/readme-pt-br.png" alt="Leia-me em português">
+    </a>
+    <a href="readme.md">
+        <img style="width:35vw;" src="./img/readme-un.png" alt="Readme in English">
+    </a>
+</div>
 <h1 align="center">Olá, eu sou o SUCATA.</h1>
 <p align="center">
 	<em>Um tradutor de legendas que utiliza modelos de Inteligência Artificial Open-Source.</em>
