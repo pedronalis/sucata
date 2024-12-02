@@ -39,7 +39,9 @@
 
 **Sucata** is an open-source tool designed to extract and translate subtitles from `.mkv` files, as well as process `.srt`, `.ass`, and `.ssa` subtitle files directly. Featuring a user-friendly interface, Sucata leverages **AI language models**, such as Llama, to deliver high-quality translations while preserving the context and style of the original dialogues.
 
-<img src="./img/sucata_preview.jpeg" alt="Sucata Preview" style="border-radius: 10px!important; display:block; overflow: hidden; margin: 0 auto;">
+<img src="./img/sucata_preview.png" alt="Sucata Preview" style="border-radius: 10px!important; display:block; overflow: hidden; margin: 0 auto;">
+<img src="./img/sucata_preview-0.jpeg" alt="Preview do Sucata" style="border-radius: 10px!important; display:block; overflow: hidden; margin: 0 auto;">
+<img src="./img/sucata_preview-1.jpeg" alt="Preview do Sucata" style="border-radius: 10px!important; display:block; overflow: hidden; margin: 0 auto;">
 
 ---
 

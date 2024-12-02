@@ -42,6 +42,8 @@
 **Sucata** é uma ferramenta open-source projetada para extrair e traduzir legendas de arquivos `.mkv`, além de processar diretamente arquivos `.srt`, `.ass` e `.ssa`. Com uma interface amigável, o Sucata utiliza **modelos de linguagem baseados em IA**, como Llama, para fornecer traduções de alta qualidade enquanto preserva o contexto e o estilo dos diálogos originais.
 
 <img src="./img/sucata_preview.png" alt="Preview do Sucata" style="border-radius: 10px!important; display:block; overflow: hidden; margin: 0 auto;">
+<img src="./img/sucata_preview-0.jpeg" alt="Preview do Sucata" style="border-radius: 10px!important; display:block; overflow: hidden; margin: 0 auto;">
+<img src="./img/sucata_preview-1.jpeg" alt="Preview do Sucata" style="border-radius: 10px!important; display:block; overflow: hidden; margin: 0 auto;">
 
 ---
 
