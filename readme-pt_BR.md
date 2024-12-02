@@ -3,20 +3,14 @@
 <p align="center">
     <img src="./img/sucata_hello.png" align="center" width="30%">
 </p>
-<table align="center">
-  <tr>
-    <td align="center">
-      <a href="readme-pt_BR.md" style="outline:none">
-        <img src="./img/readme-pt-br.png" alt="Leia em Português" width="200px">
-      </a>
-    </td>
-    <td align="center">
-      <a href="readme.md" style="outline:none">
-        <img src="./img/readme-un.png" alt="Read in English" width="200px">
-      </a>
-    </td>
-  </tr>
-</table>
+<div align="center">
+  <a href="readme-pt_BR.md">
+    <img src="./img/readme-pt-br.png" alt="Leia em Português" style="width:200px; margin-right: 10px;">
+  </a>
+  <a href="readme.md">
+    <img src="./img/readme-un.png" alt="Read in English" style="width:200px;">
+  </a>
+</div>
 
 <h1 align="center">Olá, eu sou o SUCATA.</h1>
 <p align="center">
