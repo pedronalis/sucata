@@ -4,8 +4,8 @@
     <img src="./img/sucata_hello.png" align="center" width="30%">
 </p>
 <p align="center">
-    <img style="width:30%;"src="./img/readme-pt-br.png" href="readme-pt_BR.md"></img> 
-    <img style="width:30%;"src="./img/readme-un.png"  href="readme.md"></img>
+    <img style="width:9.5rem;"src="./img/readme-pt-br.png" href="readme-pt_BR.md"></img> 
+    <img style="width:9.5rem;"src="./img/readme-un.png"  href="readme.md"></img>
 </p>
 <h1 align="center">Olá, eu sou o SUCATA.</h1>
 <p align="center">
