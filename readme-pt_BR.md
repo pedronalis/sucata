@@ -4,11 +4,11 @@
     <img src="./img/sucata_hello.png" align="center" width="30%">
 </p>
 <div align="center">
-  <a href="readme-pt_BR.md">
-    <img src="./img/readme-pt-br.png" alt="Leia em Português" style="width:200px; margin-right: 10px;">
+  <a href="readme-pt_BR.md" style="outline: none; text-decoration: none; margin-right: 10px;">
+    <img src="./img/readme-pt-br.png" alt="Leia em Português" style="width:200px; border: none;">
   </a>
-  <a href="readme.md">
-    <img src="./img/readme-un.png" alt="Read in English" style="width:200px;">
+  <a href="readme.md" style="outline: none; text-decoration: none;">
+    <img src="./img/readme-un.png" alt="Read in English" style="width:200px; border: none;">
   </a>
 </div>
 
