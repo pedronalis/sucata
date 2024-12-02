@@ -6,12 +6,12 @@
 <table align="center">
   <tr>
     <td align="center">
-      <a href="readme-pt_BR.md">
+      <a href="readme-pt_BR.md" style="outline:none">
         <img src="./img/readme-pt-br.png" alt="Leia em Português" width="200px">
       </a>
     </td>
     <td align="center">
-      <a href="readme.md">
+      <a href="readme.md" style="outline:none">
         <img src="./img/readme-un.png" alt="Read in English" width="200px">
       </a>
     </td>
