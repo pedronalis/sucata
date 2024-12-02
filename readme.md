@@ -1,10 +1,20 @@
 <p align="center">
     <img src="./img/sucata_hello.png" align="center" width="30%">
 </p>
-<p align="center">
-    <a href="readme-pt_BR.md"><img style="width:35vw;"src="./img/readme-pt-br.png" ></img></a> 
-    <a href="readme.md"><img style="width:35vw;"src="./img/readme-un.png"  href="readme.md"></img></a>
-</p>
+<table align="center">
+  <tr>
+    <td align="center">
+      <a href="readme-pt_BR.md">
+        <img src="./img/readme-pt-br.png" alt="Leia em Português" width="200px">
+      </a>
+    </td>
+    <td align="center">
+      <a href="readme.md">
+        <img src="./img/readme-un.png" alt="Read in English" width="200px">
+      </a>
+    </td>
+  </tr>
+</table>
 <h1 align="center">Hello, I'm SUCATA.</h1>
 <p align="center">
 	<em>A subtitle translator powered by Open-Source Artificial Intelligence models.</em>
