@@ -284,7 +284,7 @@ def translate_events(events, pipeline, source_language, target_language, log_tex
         try:
             # Generate translation using the pipeline
             output = pipeline(prompt, max_new_tokens=1024)
-            print(f"Output for line {i + 1}:\n\nOriginal:{event.text}\n\nTraslated:{output[0]["generated_text"][-1]}")  # Debugging
+            print(f'Output for line {i + 1}:\n\nOriginal:{event.text}\n\nTraslated:{output[0]["generated_text"][-1]}')  # Debugging
 
             # Extract the translation from the output
             if isinstance(output, list):
